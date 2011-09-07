@@ -11,7 +11,9 @@
     },
     "devDependencies" : {
         "express" : "2.4.x",
-        "browserify" : "1.4.x"
+        "browserify" : "1.4.x",
+        "sinon": "*",
+        "vows": "*"
     },
     "repository" : {
         "type" : "git",
