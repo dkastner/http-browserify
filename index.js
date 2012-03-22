@@ -3,11 +3,13 @@ var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
 
 http.request = function (params, cb) {
+    var host = window.location.host.split(':')[0];
     if (!params) params = {};
-    if (!params.host) params.host = window.location.host.split(':')[0];
+    if (!params.host) params.host = host;
     if (!params.port) params.port = window.location.port;
     
-    var req = new Request(new xhrHttp(params), params);
+    var xhrClass = xhrHttp(host, params);
+    var req = new Request(new xhrClass(), params);
     if (cb) req.on('response', cb);
     return req;
 };
@@ -22,11 +24,11 @@ http.get = function (params, cb) {
 http.Agent = function () {};
 http.Agent.defaultMaxSockets = 4;
 
-var xhrHttp = function (params) {
+var xhrHttp = function (host, params) {
     if (typeof window === 'undefined') {
         throw new Error('no window object present');
     }
-    else if (params.host != window.location.host.split(':')[0] && window.XDomainRequest) {
+    else if (params.host != host && window.XDomainRequest) {
         return window.XDomainRequest;
     }
     else if (window.XMLHttpRequest) {
