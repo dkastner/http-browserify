@@ -1,6 +1,7 @@
 var http = module.exports;
 var EventEmitter = require('events').EventEmitter;
 var Request = require('./lib/request');
+var koopa = require('koopa');
 
 http.request = function (params, cb) {
     var host = window.location.host.split(':')[0];
@@ -25,10 +26,12 @@ http.Agent = function () {};
 http.Agent.defaultMaxSockets = 4;
 
 var xhrHttp = function (host, params) {
+    var ua = koopa();
+
     if (typeof window === 'undefined') {
         throw new Error('no window object present');
     }
-    else if (params.host != host && window.XDomainRequest) {
+    else if (params.host != host && ua.ie && parseInt(ua.version.major) < 10) {
         return window.XDomainRequest;
     }
     else if (window.XMLHttpRequest) {
