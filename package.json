@@ -10,7 +10,7 @@
         "test" : "test"
     },
     "dependencies": {
-      "koopa": "*"
+      "koopa": "git://github.com/dkastner/koopa.git"
     },
     "devDependencies" : {
         "express" : "2.5.x",
